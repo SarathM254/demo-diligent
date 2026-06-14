@@ -9,7 +9,10 @@ import categoryRoutes from "./routes/categoryRoutes.js";
 const app = express(); 
 
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+  origin: function(origin, callback) {
+    // Allow all origins dynamically to support Vercel deployments
+    callback(null, true);
+  },
   credentials: true
 }));
 app.use(express.json());

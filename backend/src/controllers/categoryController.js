@@ -14,7 +14,10 @@ export const createCategory = async (req, res) => {
     const { name } = req.body;
     if (!name) return res.status(400).json({ error: "Category name is required" });
 
-    const newCategory = new Category({ name });
+    // Generate a string _id from the name to satisfy the schema requirements
+    const _id = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+    const newCategory = new Category({ _id, name });
     await newCategory.save();
     return res.status(201).json(newCategory);
   } catch (error) {

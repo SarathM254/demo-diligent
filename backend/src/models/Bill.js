@@ -60,7 +60,7 @@ const billSchema = new mongoose.Schema(
 billSchema.index({ salesmanId: 1, billingDate: 1 }, { unique: true });
 
 // Pre-save middleware: runs automatically before .save() or .create() executes
-billSchema.pre("save", function (next) {
+billSchema.pre("save", function () {
   // 'this' points directly to the active Bill document being saved
   if (this.items && this.items.length > 0) {
     // Calculate total bill value: sum up (quantity * rateSnapShot) for all rows
@@ -70,7 +70,6 @@ billSchema.pre("save", function (next) {
   } else {
     this.totalBillValue = 0;
   }
-  next();
 });
 
 const Bill = mongoose.model("Bill", billSchema);

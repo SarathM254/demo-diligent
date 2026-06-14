@@ -101,6 +101,8 @@ export const updateBillStatusByOwner = async (req, res) => {
         };
       }));
       bill.items = mappedItems;
+      // Manually recalculate the total value right now so subsequent ledger updates use the correct value
+      bill.totalBillValue = bill.items.reduce((sum, item) => sum + (item.quantity * item.rateSnapShot), 0);
     }
 
     if (isBecomingDelivered) {

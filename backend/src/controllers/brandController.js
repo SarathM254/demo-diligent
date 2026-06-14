@@ -31,6 +31,9 @@ export const upsertBrand = async (req, res) => {
       const brand = await Brand.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
       return res.status(200).json(brand);
     } else {
+      // Generate a string _id from the name to satisfy the schema requirements
+      updateData._id = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      
       const newBrand = new Brand(updateData);
       await newBrand.save();
       return res.status(201).json(newBrand);

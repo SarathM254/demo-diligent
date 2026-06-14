@@ -4,7 +4,7 @@ import { GoogleGenAI } from '@google/genai';
 export const getBrands = async (req, res) => {
   try {
     // Populates the category details automatically so we can see the category name
-    const brands = await Brand.find({}).populate('categoryId', 'name');
+    const brands = await Brand.find({}).populate('categoryId', 'name').sort({ createdAt: 1 });
     return res.status(200).json(brands);
   } catch (error) {
     return res.status(500).json({ error: error.message });

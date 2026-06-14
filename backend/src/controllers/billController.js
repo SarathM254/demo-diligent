@@ -7,8 +7,8 @@ import LedgerTransaction from '../models/LedgerTransaction.js';
 const getActiveSystemDate = async () => {
   let settings = await AppSettings.findOne({ key: "global_config" });
   
-  const offset = new Date().getTimezoneOffset() * 60000;
-  const localStr = new Date(Date.now() - offset).toISOString().split('T')[0];
+  // Use explicit timezone to avoid Vercel UTC server offset issues
+  const localStr = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
 
   if (!settings) {
     settings = await AppSettings.create({ key: "global_config", operationalDate: localStr });
@@ -140,8 +140,8 @@ export const pushGlobalSystemDate = async (req, res) => {
     const settings = await AppSettings.findOne({ key: "global_config" });
     if (!settings) return res.status(404).json({ error: "System matrix not initialized." });
 
-    const offset = new Date().getTimezoneOffset() * 60000;
-    const localStr = new Date(Date.now() - offset).toISOString().split('T')[0];
+    // Use explicit timezone to avoid Vercel UTC server offset issues
+    const localStr = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
 
     if (settings.operationalDate > localStr) {
       return res.status(400).json({ error: "Date already advanced beyond current real-world day." });

@@ -56,7 +56,7 @@ export default function InventoryControlPortal({ onBack }) {
       setIsEditing(false);
 
       for (const item of updatedInventory) {
-        await upsertBrand({ brandId: item.brandId, inventoryCount: item.quantity });
+        await upsertBrand({ id: item.brandId, inventoryCount: item.quantity });
       }
     } catch (error) {
       console.error("Failed to sync inventory:", error);

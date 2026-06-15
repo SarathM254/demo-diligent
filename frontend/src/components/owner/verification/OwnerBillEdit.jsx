@@ -1,16 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { getCategories, getBrands } from '../../../api/inventoryApi';
 
-export default function OwnerBillEdit({ bill, mockCategories, ratesMapping, onSaveOverride, onCancel }) {
+export default function OwnerBillEdit({ bill, onSaveOverride, onCancel }) {
   const [expandedCategories, setExpandedCategories] = useState({});
+  const [mockCategories, setMockCategories] = useState([]);
+  const [ratesMapping, setRatesMapping] = useState({});
+  const [loading, setLoading] = useState(true);
 
   // Initialize form with the exact current live values inside this specific bill snapshot
-  const { register, handleSubmit, setValue } = useForm({
+  const { register, handleSubmit, setValue, reset } = useForm({
     defaultValues: bill.items.reduce((acc, item) => {
       acc[item.brandId] = item.quantity || "";
       return acc;
     }, {})
   });
+
+  useEffect(() => {
+    const fetchInventory = async () => {
+      try {
+        const [cats, brnds] = await Promise.all([getCategories(), getBrands()]);
+        const structuredCats = cats.map(cat => ({
+          id: cat._id,
+          name: cat.name,
+          brands: brnds.filter(b => {
+            const bCatId = b.categoryId && typeof b.categoryId === 'object' ? b.categoryId._id : b.categoryId;
+            return bCatId === cat._id;
+          }).map(b => ({
+            id: b._id,
+            name: b.name
+          }))
+        }));
+        
+        const newRates = {};
+        brnds.forEach(b => {
+          newRates[b._id] = b.retailPrice || 0;
+        });
+
+        setMockCategories(structuredCats);
+        setRatesMapping(newRates);
+      } catch (error) {
+        console.error("Failed to load inventory for editing:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchInventory();
+  }, []);
 
   const toggleCategory = (id) => {
     setExpandedCategories(prev => ({ ...prev, [id]: !prev[id] }));
@@ -55,6 +91,14 @@ export default function OwnerBillEdit({ bill, mockCategories, ratesMapping, onSa
 
     onSaveOverride(bill._id, updatedItems);
   };
+
+  if (loading) {
+    return (
+      <div className="w-full min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-slate-500 font-bold animate-pulse">Loading inventory manifest...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full min-h-screen bg-slate-50 flex flex-col justify-between max-w-md mx-auto">

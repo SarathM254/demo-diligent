@@ -54,11 +54,15 @@ export default function SalesmanProfileCard({ salesman, onNavigateToBilling, onN
             </div>
           </div>
 
-          <div className="flex items-center justify-between bg-slate-50 rounded-xl p-3.5 px-7 border border-slate-100">
+
+
+{/* this part needs to be remvoed from comments */}
+
+          {/* <div className="flex items-center justify-between bg-slate-50 rounded-xl p-3.5 px-7 border border-slate-100">
             <span className="text-xl font-bold text-slate-700 tracking-wide">
               Bill Status:
             </span>
-            {/* Dynamic color warning: Green if 0, Red badge if debt exists */}
+            
             <div className="px-3 py-1.5 rounded-full font-bold text-base tracking-tight bg-slate-300 text-slate-600 border border-slate-600">
               Unverified
             </div>
@@ -67,11 +71,11 @@ export default function SalesmanProfileCard({ salesman, onNavigateToBilling, onN
             <span className="text-xl font-bold text-slate-700 tracking-wide">
               Cash Status:
             </span>
-            {/* Dynamic color warning: Green if 0, Red badge if debt exists */}
+            
             <div className="px-3 py-1.5 rounded-full font-bold text-base tracking-tight bg-slate-300 text-slate-600 border border-slate-600">
               Unverified
             </div>
-          </div>
+          </div> */}
 
           <div className="flex items-center justify-between rounded-xl space-x-2">
             <button type="button" onClick={onNavigateToBilling} className="flex-1 flex justify-center px-3 py-2 rounded-lg font-bold text-base tracking-tight bg-indigo-600 text-indigo-50 border border-emerald-100 transition duration-150 ease-in-out active:scale-95 active:bg-indigo-700">

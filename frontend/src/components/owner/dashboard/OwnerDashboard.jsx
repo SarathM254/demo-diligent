@@ -150,7 +150,9 @@ export default function OwnerDashboard({ onNavigate }) {
         {/* --- EXECUTIVE KPI SUMMARY GRIDS --- */}
         <div className="space-y-3">
           {/* Debt Overage Metric */}
-          <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs flex justify-between items-center">
+
+
+          {/* <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs flex justify-between items-center">
             <div className="space-y-0.5">
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Salesman Exposure</span>
               <p className="text-xs text-slate-400">Aggregated Market Brought Forward (BF) Debt</p>
@@ -158,10 +160,10 @@ export default function OwnerDashboard({ onNavigate }) {
             <span className="text-xl font-black text-rose-700 tracking-tight bg-rose-50/50 border border-rose-100/70 px-3 py-1.5 rounded-xl">
               ₹{financials.totalSalesmanBFDebt.toLocaleString('en-IN')}
             </span>
-          </div>
+          </div> */}
 
           {/* Load Volume Subtotals Block */}
-          <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs space-y-3">
+          {/* <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs space-y-3">
             <div className="flex justify-between items-center border-b border-slate-100 pb-2.5">
               <div className="space-y-0.5">
                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Stock Dispatched</span>
@@ -191,7 +193,7 @@ export default function OwnerDashboard({ onNavigate }) {
                 </p>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* --- MODULE PORTAL LINKS --- */}

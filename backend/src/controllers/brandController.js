@@ -19,8 +19,8 @@ export const upsertBrand = async (req, res) => {
       name, 
       code: code ? code.toUpperCase().trim() : undefined, 
       categoryId, 
-      wholesalePrice: Number(wholesalePrice), 
-      retailPrice: Number(retailPrice),
+      wholesalePrice: wholesalePrice !== undefined ? Number(wholesalePrice) : undefined, 
+      retailPrice: retailPrice !== undefined ? Number(retailPrice) : undefined,
       inventoryCount: inventoryCount !== undefined ? Number(inventoryCount) : undefined
     };
 

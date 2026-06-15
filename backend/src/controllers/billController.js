@@ -179,7 +179,17 @@ export const getSalesmanBillHistory = async (req, res) => {
 
 export const getPendingBillsForAdmin = async (req, res) => {
   try {
-    const bills = await Bill.find({ status: { $in: ['submitted', 'delivered', 'billed'] } }).populate('salesmanId', 'name');
+    const operationalDate = await getActiveSystemDate();
+    
+    // Show all submitted and delivered bills regardless of date.
+    // Only show billed bills if they were billed on the current operational date.
+    const bills = await Bill.find({
+      $or: [
+        { status: { $in: ['submitted', 'delivered'] } },
+        { status: 'billed', billingDate: operationalDate }
+      ]
+    }).populate('salesmanId', 'name');
+    
     return res.status(200).json(bills.map(b => ({
       _id: b._id,
       salesmanName: b.salesmanId ? b.salesmanId.name : 'Unknown Profile',

@@ -4,7 +4,7 @@ import { GoogleGenAI } from '@google/genai';
 export const getBrands = async (req, res) => {
   try {
     // Populates the category details automatically so we can see the category name
-    const brands = await Brand.find({}).populate('categoryId', 'name').sort({ createdAt: 1 });
+    const brands = await Brand.find({}).populate('categoryId', 'name').sort({ createdAt: 1 }).lean();
     return res.status(200).json(brands);
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -78,7 +78,7 @@ export const parseInvoiceWithAI = async (req, res) => {
     }
 
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-    const brands = await Brand.find({}).select('_id name');
+    const brands = await Brand.find({}).select('_id name').lean();
 
     const brandListStr = brands.map(b => `{ "id": "${b._id}", "name": "${b.name}" }`).join(',\n');
 

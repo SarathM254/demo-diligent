@@ -59,6 +59,10 @@ const billSchema = new mongoose.Schema(
 // Compound Index: Enforces the rule of maximum ONE bill per salesman per calendar day
 billSchema.index({ salesmanId: 1, billingDate: 1 }, { unique: true });
 
+// Performance indexes for desk aggregations and history tracking
+billSchema.index({ salesmanId: 1, billingDate: -1 });
+billSchema.index({ status: 1, billingDate: 1 });
+
 // Pre-save middleware: runs automatically before .save() or .create() executes
 billSchema.pre("save", function () {
   // 'this' points directly to the active Bill document being saved

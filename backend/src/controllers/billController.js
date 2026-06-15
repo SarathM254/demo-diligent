@@ -171,7 +171,7 @@ export const pushGlobalSystemDate = async (req, res) => {
 export const getSalesmanBillHistory = async (req, res) => {
   try {
     const { salesmanId } = req.params;
-    return res.status(200).json(await Bill.find({ salesmanId }).sort({ billingDate: -1 }));
+    return res.status(200).json(await Bill.find({ salesmanId }).sort({ billingDate: -1 }).lean());
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -188,7 +188,7 @@ export const getPendingBillsForAdmin = async (req, res) => {
         { status: { $in: ['submitted', 'delivered'] } },
         { status: 'billed', billingDate: operationalDate }
       ]
-    }).populate('salesmanId', 'name');
+    }).populate('salesmanId', 'name').lean();
     
     return res.status(200).json(bills.map(b => ({
       _id: b._id,
@@ -208,11 +208,11 @@ export const getDashboardStats = async (req, res) => {
     const operationalDate = await getActiveSystemDate();
 
     // 1. Total Salesman Exposure (Global)
-    const salesmen = await User.find({ role: 'salesman' });
+    const salesmen = await User.find({ role: 'salesman' }).lean();
     const totalSalesmanBFDebt = salesmen.reduce((sum, s) => sum + (s.broughtForwardDebt || 0), 0);
 
     // 2. Load Volume for Operational Date
-    const todaysBills = await Bill.find({ billingDate: operationalDate, status: { $in: ['delivered', 'billed'] } });
+    const todaysBills = await Bill.find({ billingDate: operationalDate, status: { $in: ['delivered', 'billed'] } }).lean();
     
     let billedLoad = 0;
     let unbilledLoad = 0;

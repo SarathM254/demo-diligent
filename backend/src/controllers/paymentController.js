@@ -63,7 +63,7 @@ export const verifyPaymentByOwner = async (req, res) => {
 
 export const getPendingPaymentsForAdmin = async (req, res) => {
   try {
-    const sheets = await Payment.find({ status: 'unverified' }).populate("salesmanId", "name");
+    const sheets = await Payment.find({ status: 'unverified' }).populate("salesmanId", "name").lean();
     return res.status(200).json(sheets.map(p => ({
       _id: p._id,
       salesmanName: p.salesmanId ? p.salesmanId.name : 'Unknown Profile',

@@ -32,5 +32,7 @@ const ledgerTransactionSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+ledgerTransactionSchema.index({ salesmanId: 1, createdAt: -1 });
+
 const LedgerTransaction = mongoose.model("LedgerTransaction", ledgerTransactionSchema);
 export default LedgerTransaction;

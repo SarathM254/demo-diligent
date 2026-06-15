@@ -47,6 +47,7 @@ const paymentSchema = new mongoose.Schema(
 //restricting the salesman to make only one payment entry per day.
 
 paymentSchema.index({ salesmanId: 1, paymentDate: 1 }, { unique: true });
+paymentSchema.index({ status: 1 });
 
 paymentSchema.pre("save", function () {
   const cb = this.cashBreakdown;

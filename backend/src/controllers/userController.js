@@ -3,7 +3,7 @@ import LedgerTransaction from "../models/LedgerTransaction.js";
 
 export const getAllSalesmen = async (req, res) => {
   try {
-    return res.status(200).json(await User.find({ role: "salesman" }).sort({ name: 1 }));
+    return res.status(200).json(await User.find({ role: "salesman" }).sort({ name: 1 }).lean());
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -12,7 +12,7 @@ export const getAllSalesmen = async (req, res) => {
 export const getSalesmanStatementHistory = async (req, res) => {
   try {
     const { salesmanId } = req.params;
-    return res.status(200).json(await LedgerTransaction.find({ salesmanId }).sort({ createdAt: -1 }));
+    return res.status(200).json(await LedgerTransaction.find({ salesmanId }).sort({ createdAt: -1 }).lean());
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -70,7 +70,7 @@ export const registerUser = async (req, res) => {
 
 export const getAllOperators = async (req, res) => {
   try {
-    return res.status(200).json(await User.find({ role: "operator" }).sort({ name: 1 }));
+    return res.status(200).json(await User.find({ role: "operator" }).sort({ name: 1 }).lean());
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

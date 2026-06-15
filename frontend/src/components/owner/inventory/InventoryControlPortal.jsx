@@ -52,15 +52,21 @@ export default function InventoryControlPortal({ onBack }) {
 
   const handleSaveInventory = async (updatedInventory) => {
     try {
+      // Filter out items that haven't changed to prevent flooding the backend with unnecessary API calls
+      const changedItems = updatedInventory.filter((item, index) => {
+        const originalItem = inventoryState.find(i => i.brandId === item.brandId);
+        return !originalItem || originalItem.quantity !== item.quantity;
+      });
+
       setInventoryState(updatedInventory);
       setIsEditing(false);
 
-      for (const item of updatedInventory) {
+      for (const item of changedItems) {
         await upsertBrand({ id: item.brandId, inventoryCount: item.quantity });
       }
     } catch (error) {
       console.error("Failed to sync inventory:", error);
-      alert("Failed to sync some inventory items.");
+      alert("Failed to sync some inventory items: " + (error.response?.data?.error || error.message || "Unknown error"));
     }
   };
 
